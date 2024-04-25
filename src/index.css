@@ -1,3 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+    @apply absolute bg-white bg-[radial-gradient(#e5e7eb_2px,transparent_1px)] [background-size:60px_60px]
+}
