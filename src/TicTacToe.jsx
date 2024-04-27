@@ -1,10 +1,8 @@
 import React from 'react';
 
-const initialBoard = () => Array(9).fill(null);
 export default function TicTacToe() {
-  const [board, setBoard] = React.useState(initialBoard());
+  const [board, setBoard] = React.useState(Array(9).fill(null));
 
-  console.log(board);
   return (
     <div className='flex flex-col gap-10 md:gap-5 justify-center items-center h-screen w-screen'>
       <p className='text-[3rem] md:text-[6rem] font-bold leading-none text-gray-800'>
