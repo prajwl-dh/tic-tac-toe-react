@@ -15,16 +15,17 @@ export default function TicTacToe() {
         <div className='flex flex-row justify-between items-end p-2 md:p-5'>
           {winner === 'X' || winner === 'O' ? (
             <p className='text text-gray-700 font-bold text-3xl'>
-              Winner : <span className='text font-normal'>{winner}</span>
+              {'Player ' + winner + ' wins'}
             </p>
-          ) : tie?.length === 0 ? (
+          ) : tie?.length > 0 ? ( // Check if all squares are filled
             <p className='text text-gray-700 font-bold text-3xl'>
-              Turn :{' '}
-              <span className='text font-normal'>{xTurn ? 'X' : 'O'}</span>
+              It&apos;s a Tie!
             </p>
           ) : (
             <p className='text text-gray-700 font-bold text-3xl'>
-              Winner : <span className='text font-normal'>{tie}</span>
+              <span className='text font-normal'>
+                {xTurn ? `X's turn` : `O's turn`}
+              </span>
             </p>
           )}
           <button
@@ -40,8 +41,14 @@ export default function TicTacToe() {
           {board.map((_, index) => {
             return (
               <button
-                className={`border-2 border-gray-500 h-24 md:h-36 text-5xl text-gray-700 overflow-hidden ${
-                  board[index] === 'X' || board[index] === 'O' ? 'bg-white' : ''
+                className={`border-2 border-gray-500 h-24 md:h-36 text-5xl text-gray-700 overflow-hidden group ${
+                  winner?.length > 0 || tie?.length > 0
+                    ? 'cursor-not-allowed'
+                    : ''
+                } ${
+                  board[index] === 'X' || board[index] === 'O'
+                    ? 'bg-white transition duration-200 cursor-not-allowed'
+                    : ''
                 }`}
                 key={index}
                 onClick={() => handleClick(index)}
@@ -55,7 +62,17 @@ export default function TicTacToe() {
                     : false
                 }
               >
-                {board[index]}
+                <p
+                  className={`text transition duration-200 ${
+                    board[index] ? 'text-gray-700' : 'text-transparent'
+                  } ${
+                    winner?.length > 0 || tie?.length > 0
+                      ? ''
+                      : 'group-hover:text-gray-500'
+                  }`}
+                >
+                  {board[index] ? board[index] : xTurn ? 'X' : 'O'}
+                </p>
               </button>
             );
           })}
