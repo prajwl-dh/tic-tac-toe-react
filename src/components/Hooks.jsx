@@ -6,11 +6,20 @@ const Hooks = () => {
   const [winner, setWinner] = React.useState(null);
   const [tie, setTie] = React.useState(null);
 
+  const playSound = (player) => {
+    const audio = new Audio(`/${player}`); // Adjusted path
+    audio
+      .play()
+      .catch((error) => console.error('Audio playback failed:', error));
+  };
+
   const handleClick = (index) => {
     if (xTurn) {
       board[index] = 'X';
+      playSound('xSound.wav');
     } else {
       board[index] = 'O';
+      playSound('oSound.wav');
     }
     setWinner(checkWinner());
     setTie(tieChecker());

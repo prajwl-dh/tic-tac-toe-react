@@ -1,3 +1,4 @@
+import React, { useEffect, useRef } from 'react';
 import Confetti from 'react-confetti';
 import useWindowSize from 'react-use/lib/useWindowSize';
 import Hooks from './Hooks';
@@ -5,6 +6,39 @@ import Hooks from './Hooks';
 export default function TicTacToe() {
   const { board, xTurn, handleClick, resetGame, winner, tie } = Hooks();
   const { width, height } = useWindowSize();
+  const audioRef = useRef(null); // Create a ref to store the audio instance
+
+  useEffect(() => {
+    if (winner === 'X' || winner === 'O') {
+      if (audioRef.current) {
+        audioRef.current.pause(); // Pause if an audio instance already exists
+      }
+      const audio = new Audio('/winningSound.mp3'); // Create a new audio instance
+      audio.loop = true; // Set loop to true
+      audio
+        .play()
+        .catch((error) => console.error('Audio playback failed:', error));
+      audioRef.current = audio; // Store the audio instance in the ref
+    } else if (tie?.length > 0) {
+      if (audioRef.current) {
+        audioRef.current.pause(); // Pause if an audio instance already exists
+      }
+      const audio = new Audio('/tieSound.wav'); // Create a new audio instance
+      audio
+        .play()
+        .catch((error) => console.error('Audio playback failed:', error));
+      audioRef.current = audio; // Store the audio instance in the ref
+    }
+  }, [winner, tie]);
+
+  // Function to reset the game and stop the audio
+  const handleResetGame = () => {
+    if (audioRef.current) {
+      audioRef.current.pause(); // Pause the audio when the game is reset
+      audioRef.current = null; // Clear the audio reference
+    }
+    resetGame();
+  };
 
   return (
     <div className='flex flex-col gap-10 md:gap-5 justify-center items-center h-screen w-screen'>
@@ -29,7 +63,7 @@ export default function TicTacToe() {
             </p>
           )}
           <button
-            onClick={() => resetGame()}
+            onClick={handleResetGame} // Use the new handleResetGame function
             className='px-2 py-1 rounded-md bg-red-600 text-white hover:bg-red-500 hover:scale-105 active:bg-red-500 transition duration-300 text-xl'
           >
             {winner == 'X' || winner == 'O' || tie?.length > 0
@@ -51,7 +85,9 @@ export default function TicTacToe() {
                     : ''
                 }`}
                 key={index}
-                onClick={() => handleClick(index)}
+                onClick={() => {
+                  handleClick(index);
+                }}
                 disabled={
                   winner === 'X' ||
                   winner === 'O' ||
