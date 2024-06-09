@@ -15,11 +15,11 @@ const Hooks = () => {
 
   const handleClick = (index) => {
     if (xTurn) {
-      board[index] = 'X';
       playSound('xSound.wav');
+      board[index] = 'X';
     } else {
-      board[index] = 'O';
       playSound('oSound.wav');
+      board[index] = 'O';
     }
     setWinner(checkWinner());
     setTie(tieChecker());
