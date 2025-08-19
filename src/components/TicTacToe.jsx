@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import Confetti from 'react-confetti';
 import useWindowSize from 'react-use/lib/useWindowSize';
 import Hooks from './Hooks';
@@ -41,82 +41,67 @@ export default function TicTacToe() {
   };
 
   return (
-    <div className='flex flex-col gap-10 md:gap-5 justify-center items-center h-screen w-screen'>
-      <p className='text-[3rem] md:text-[6rem] font-bold leading-none text-gray-800'>
+    <div className='flex flex-col gap-10 md:gap-6 justify-center items-center h-screen w-screen bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 transition-colors duration-500'>
+      <p className='text-[3rem] md:text-[5rem] font-extrabold text-gray-800 dark:text-white drop-shadow-sm'>
         Tic Tac Toe
       </p>
-      <div className='bg-slate-200 flex flex-col backdrop-blur-sm bg-opacity-40 rounded-lg shadow-sm w-[96vw] md:w-[60vw]'>
-        <div className='flex flex-row justify-between items-end p-2 md:p-5'>
+
+      <div className='backdrop-blur-md bg-white/20 dark:bg-white/10 border border-white/30 dark:border-white/20 shadow-lg rounded-3xl p-6 md:p-10 w-[95vw] md:w-[60vw] max-w-2xl transition-all duration-300'>
+        <div className='flex flex-row justify-between items-center mb-6'>
           {winner === 'X' || winner === 'O' ? (
-            <p className='text text-gray-700 font-bold text-3xl'>
-              {'Player ' + winner + ' wins'}
+            <p className='text-gray-800 dark:text-white font-bold text-2xl md:text-3xl'>
+              🎉 Player {winner} wins!
             </p>
-          ) : tie?.length > 0 ? ( // Check if all squares are filled
-            <p className='text text-gray-700 font-bold text-3xl'>
-              It&apos;s a Tie!
+          ) : tie?.length > 0 ? (
+            <p className='text-gray-800 dark:text-white font-bold text-2xl md:text-3xl'>
+              🤝 It&apos;s a Tie!
             </p>
           ) : (
-            <p className='text text-gray-700 font-bold text-3xl'>
-              <span className='text font-normal'>
-                {xTurn ? `X's turn` : `O's turn`}
-              </span>
+            <p className='text-gray-600 dark:text-gray-300 font-medium text-xl md:text-2xl'>
+              {xTurn ? "🔷 X's Turn" : "🔶 O's Turn"}
             </p>
           )}
+
           <button
-            onClick={handleResetGame} // Use the new handleResetGame function
-            className='px-2 py-1 rounded-md bg-red-600 text-white hover:bg-red-500 hover:scale-105 active:bg-red-500 transition duration-300 text-xl'
+            onClick={handleResetGame}
+            className='bg-gradient-to-r from-pink-500 to-purple-500 text-white px-4 py-2 rounded-xl font-semibold shadow-md hover:scale-105 hover:brightness-110 transition-transform duration-200'
           >
-            {winner == 'X' || winner == 'O' || tie?.length > 0
-              ? 'Play Again'
-              : 'Reset'}
+            {winner || tie?.length > 0 ? 'Play Again' : 'Reset'}
           </button>
         </div>
-        <div className='grid grid-cols-3 m-2 md:m-5 border-2 border-gray-500 rounded-sm'>
-          {board.map((_, index) => {
-            return (
-              <button
-                className={`border-2 border-gray-500 h-24 md:h-36 text-5xl text-gray-700 overflow-hidden group ${
-                  winner?.length > 0 || tie?.length > 0
-                    ? 'cursor-not-allowed'
-                    : ''
-                } ${
-                  board[index] === 'X' || board[index] === 'O'
-                    ? 'bg-white transition duration-200 cursor-not-allowed'
-                    : ''
-                }`}
-                key={index}
-                onClick={() => {
-                  handleClick(index);
-                }}
-                disabled={
-                  winner === 'X' ||
-                  winner === 'O' ||
-                  tie?.length > 0 ||
-                  board[index] === 'X' ||
-                  board[index] === 'O'
-                    ? true
-                    : false
-                }
-              >
-                <p
-                  className={`text transition duration-200 ${
-                    board[index] ? 'text-gray-700' : 'text-transparent'
-                  } ${
-                    winner?.length > 0 || tie?.length > 0
-                      ? ''
-                      : 'group-hover:text-gray-500'
-                  }`}
-                >
-                  {board[index] ? board[index] : xTurn ? 'X' : 'O'}
-                </p>
-              </button>
-            );
-          })}
+
+        <div className='grid grid-cols-3 gap-3'>
+          {board.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => handleClick(index)}
+              disabled={
+                winner ||
+                tie?.length > 0 ||
+                board[index] === 'X' ||
+                board[index] === 'O'
+              }
+              className={`w-full aspect-square rounded-2xl text-4xl md:text-6xl font-bold transition-all duration-200 flex items-center justify-center shadow-inner ${
+                board[index] === 'X'
+                  ? 'bg-blue-200 text-blue-800 dark:bg-blue-900 dark:text-blue-300'
+                  : board[index] === 'O'
+                  ? 'bg-pink-200 text-pink-800 dark:bg-pink-900 dark:text-pink-300'
+                  : 'bg-white/30 dark:bg-white/10 text-transparent hover:text-gray-400 dark:hover:text-gray-500 hover:scale-105'
+              } ${
+                winner || tie?.length > 0
+                  ? 'cursor-not-allowed'
+                  : 'cursor-pointer'
+              }`}
+            >
+              {board[index] || (xTurn ? 'X' : 'O')}
+            </button>
+          ))}
         </div>
       </div>
-      {winner == 'X' || winner == 'O' || tie?.length > 0 ? (
+
+      {(winner || tie?.length > 0) && (
         <Confetti width={width} height={height} />
-      ) : null}
+      )}
     </div>
   );
 }
