@@ -41,36 +41,36 @@ export default function TicTacToe() {
   };
 
   return (
-    <div className='flex flex-col gap-10 md:gap-6 justify-center items-center h-screen w-screen bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 transition-colors duration-500'>
-      <p className='text-[3rem] md:text-[5rem] font-extrabold text-gray-800 dark:text-white drop-shadow-sm'>
+    <div className='flex flex-col justify-center items-center h-screen px-4 py-4 box-border overflow-hidden bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 transition-colors duration-500'>
+      <p className='text-[2.5rem] md:text-[3.5rem] font-extrabold text-gray-800 dark:text-white drop-shadow-sm mb-4 text-center'>
         Tic Tac Toe
       </p>
 
-      <div className='backdrop-blur-md bg-white/20 dark:bg-white/10 border border-white/30 dark:border-white/20 shadow-lg rounded-3xl p-6 md:p-10 w-[95vw] md:w-[60vw] max-w-2xl transition-all duration-300'>
-        <div className='flex flex-row justify-between items-center mb-6'>
+      <div className='backdrop-blur-md bg-white/20 dark:bg-white/10 border border-white/30 dark:border-white/20 shadow-lg rounded-3xl p-4 md:p-6 w-full max-w-lg max-h-[90vh] flex flex-col justify-between transition-all duration-300'>
+        <div className='flex flex-row justify-between items-center mb-4'>
           {winner === 'X' || winner === 'O' ? (
-            <p className='text-gray-800 dark:text-white font-bold text-2xl md:text-3xl'>
+            <p className='text-gray-800 dark:text-white font-bold text-xl md:text-2xl'>
               🎉 Player {winner} wins!
             </p>
           ) : tie?.length > 0 ? (
-            <p className='text-gray-800 dark:text-white font-bold text-2xl md:text-3xl'>
+            <p className='text-gray-800 dark:text-white font-bold text-xl md:text-2xl'>
               🤝 It&apos;s a Tie!
             </p>
           ) : (
-            <p className='text-gray-600 dark:text-gray-300 font-medium text-xl md:text-2xl'>
+            <p className='text-gray-600 dark:text-gray-300 font-medium text-lg md:text-xl'>
               {xTurn ? "🔷 X's Turn" : "🔶 O's Turn"}
             </p>
           )}
 
           <button
             onClick={handleResetGame}
-            className='bg-gradient-to-r from-pink-500 to-purple-500 text-white px-4 py-2 rounded-xl font-semibold shadow-md hover:scale-105 hover:brightness-110 transition-transform duration-200'
+            className='bg-gradient-to-r from-pink-500 to-purple-500 text-white px-3 py-1.5 rounded-lg font-semibold shadow-md hover:scale-105 hover:brightness-110 transition-transform duration-200 text-sm md:text-base'
           >
             {winner || tie?.length > 0 ? 'Play Again' : 'Reset'}
           </button>
         </div>
 
-        <div className='grid grid-cols-3 gap-3'>
+        <div className='grid grid-cols-3 gap-2 sm:gap-3'>
           {board.map((_, index) => (
             <button
               key={index}
@@ -81,7 +81,7 @@ export default function TicTacToe() {
                 board[index] === 'X' ||
                 board[index] === 'O'
               }
-              className={`w-full aspect-square rounded-2xl text-4xl md:text-6xl font-bold transition-all duration-200 flex items-center justify-center shadow-inner ${
+              className={`w-full aspect-square rounded-xl text-3xl md:text-5xl font-bold transition-all duration-200 flex items-center justify-center shadow-inner ${
                 board[index] === 'X'
                   ? 'bg-blue-200 text-blue-800 dark:bg-blue-900 dark:text-blue-300'
                   : board[index] === 'O'
